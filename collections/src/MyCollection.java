@@ -8,7 +8,7 @@ public interface MyCollection<T extends Comparable<T>> {
 
     T getGreatest();
 
-    T getKth();
+    T getKth(int k);
 
     boolean hasElement(T object);
 

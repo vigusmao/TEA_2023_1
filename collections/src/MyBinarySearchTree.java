@@ -26,7 +26,7 @@ public class MyBinarySearchTree<T extends Comparable<T>> implements MyCollection
     }
 
     @Override
-    public T getKth() {
+    public T getKth(int k) {
         // ToDo IMPLEMENT ME!
         return null;
     }

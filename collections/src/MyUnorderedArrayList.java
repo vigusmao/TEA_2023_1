@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MyUnorderedArrayList<T extends Comparable<T>> implements MyCollection<T> {
 
@@ -15,7 +16,7 @@ public class MyUnorderedArrayList<T extends Comparable<T>> implements MyCollecti
     }
 
     @Override
-    public T getSmallest() {
+    public T getSmallest() {  // O(n)
         T smallest = null;
         for (T element : this.arrayList) {
             if (smallest == null || element.compareTo(smallest) < 0) {
@@ -37,9 +38,17 @@ public class MyUnorderedArrayList<T extends Comparable<T>> implements MyCollecti
     }
 
     @Override
-    public T getKth() {
-        // ToDo IMPLEMENT ME!
-        return null;
+    public T getKth(int k) {
+        // ToDo FIX ME!!!!
+//        Collections.sort(this.arrayList);
+//        return this.arrayList.get(k-1);
+        T smallest = null;
+        for (T element : this.arrayList) {
+            if (smallest == null || element.compareTo(smallest) < 0) {
+                smallest = element;
+            }
+        }
+        return smallest;
     }
 
     @Override

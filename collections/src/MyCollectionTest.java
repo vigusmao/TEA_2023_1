@@ -15,14 +15,14 @@ public class MyCollectionTest {
     public void setUp() {
         MyCollection<Integer> unorderedList = new MyUnorderedArrayList<>();
         MyCollection<Integer> orderedList = new MyOrderedArrayList<>();
-        MyCollection<Integer> binarySearchTree = new MyBinarySearchTree<>();
         MyCollection<Integer> hashSet = new MyHashSet<>();
+        MyCollection<Integer> binarySearchTree = new MyBinarySearchTree<>();
 
         collections = new ArrayList<>();
         collections.add(unorderedList);
-        collections.add(orderedList);
-        collections.add(binarySearchTree);
-        collections.add(hashSet);
+//        collections.add(orderedList);
+//        collections.add(hashSet);
+//        collections.add(binarySearchTree);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class MyCollectionTest {
 
     @Test
     public void compareTimesToAddElements() {
-        int N = 10_000;
+        int N = 8_000_000;
 
         System.out.println("\nINSERT");
         for (MyCollection<Integer> collection : collections) {
@@ -74,7 +74,7 @@ public class MyCollectionTest {
 
     @Test
     public void compareTimesToLookupElements() {
-        int N = 10_000;
+        int N = 4_000_000;
 
         Set<Integer> allElements = new HashSet<>();
         while (allElements.size() < N) {
@@ -83,8 +83,8 @@ public class MyCollectionTest {
 
         System.out.println("\nLOOK UP");
         for (MyCollection<Integer> collection : collections) {
-            long start = System.nanoTime();
             populateMyCollection(collection, allElements);
+            long start = System.nanoTime();
             int countFound = 0;
             for (int i = 0; i < N; i++) {
                 if (collection.hasElement(i)) {
@@ -93,6 +93,60 @@ public class MyCollectionTest {
             }
 
             printDuration(collection, String.format("lookup " + N + " elements (found %d)", countFound), start);
+        }
+    }
+
+    @Test
+    public void compareTimesToGetSmallest() {
+        int N = 8_000_000;
+
+        Set<Integer> allElements = new HashSet<>();
+        while (allElements.size() < N) {
+            allElements.add(random.nextInt(2 * N));
+        }
+
+        System.out.println("\nGET SMALLEST");
+        for (MyCollection<Integer> collection : collections) {
+            populateMyCollection(collection, allElements);
+            long start = System.nanoTime();
+            int smallest = collection.getSmallest();
+            printDuration(collection, String.format("find %d", smallest), start);
+        }
+    }
+
+    @Test
+    public void compareTimesToGetRangeSize() {
+        int N = 8_000_000;
+
+        Set<Integer> allElements = new HashSet<>();
+        while (allElements.size() < N) {
+            allElements.add(random.nextInt(2 * N));
+        }
+
+        System.out.println("\nGET RANGE SIZE");
+        for (MyCollection<Integer> collection : collections) {
+            populateMyCollection(collection, allElements);
+            long start = System.nanoTime();
+            int rangeSize = collection.getRangeSize(1000, 50_000);
+            printDuration(collection, String.format("find %d", rangeSize), start);
+        }
+    }
+
+    @Test
+    public void compareTimesToGetKth() {
+        int N = 8_000_000;
+
+        Set<Integer> allElements = new HashSet<>();
+        while (allElements.size() < N) {
+            allElements.add(random.nextInt(2 * N));
+        }
+
+        System.out.println("\nGET RANGE SIZE");
+        for (MyCollection<Integer> collection : collections) {
+            populateMyCollection(collection, allElements);
+            long start = System.nanoTime();
+            int kth = collection.getKth(1);
+            printDuration(collection, String.format("find %d", kth), start);
         }
     }
 

@@ -15,7 +15,7 @@ public class MyHashSet<T extends Comparable<T>> implements MyCollection<T> {
     }
 
     @Override
-    public T getSmallest() {
+    public T getSmallest() {  // O(n)
         T result = null;
         for (T element : hashSet) {
             if (result == null || element.compareTo(result) < 0) {
@@ -26,7 +26,7 @@ public class MyHashSet<T extends Comparable<T>> implements MyCollection<T> {
     }
 
     @Override
-    public T getGreatest() {
+    public T getGreatest() {  // O(n)
         T result = null;
         for (T element : hashSet) {
             if (result == null || element.compareTo(result) > 0) {
@@ -37,7 +37,7 @@ public class MyHashSet<T extends Comparable<T>> implements MyCollection<T> {
     }
 
     @Override
-    public T getKth() {
+    public T getKth(int k) {
         return null;
     }
 
