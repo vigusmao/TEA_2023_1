@@ -1,6 +1,6 @@
 from random import random
 
-REPETICOES = 100000
+REPETICOES = 1000000
 
 # legibilidade
 HONESTA = 0
@@ -8,7 +8,7 @@ FALSA = 1
 CARA = 0
 COROA = 1
 
-DISTRIB_FALSA = 0.1
+DISTRIB_FALSA = 0.5
 
 
 # probs condicionais
@@ -35,17 +35,38 @@ def lancar_moeda(moeda):
         else COROA 
   
 
-moeda = sortear_moeda_da_urna()
-print "sorteada foi", "honesta" if moeda==HONESTA\
-                                else "viciada"
+cont_tres_caras, cont_falsas = 0, 0
+
+for _ in range(REPETICOES):
+    moeda = sortear_moeda_da_urna()
+#print "sorteada foi", "honesta" if moeda==HONESTA\
+#                                else "viciada"
+    r1,r2,r3 = lancar_moeda(moeda),\
+               lancar_moeda(moeda),\
+               lancar_moeda(moeda)
+
+    if (r1,r2,r3) == (CARA,CARA,CARA):
+        cont_tres_caras += 1
+        if moeda == FALSA:
+            cont_falsas += 1
+    
+print 1.0 * cont_falsas/cont_tres_caras
+
+
+
+
+
+
+
+
 
 # modelo de crencas
 pr_viciada = 0.8
 
-
 cont = 0
-print cont, "--- Pr{falsa} =", pr_viciada
+#print cont, "--- Pr{falsa} =", pr_viciada
 for _ in range(REPETICOES):
+    break  ### 
     cont += 1    
     pr_honesta = 1 - pr_viciada
     
