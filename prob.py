@@ -1,46 +1,45 @@
 from random import random
 
-REPETICOES = 1000000
+REPETICOES = 100
 
 # legibilidade
-HONESTA = 0
-FALSA = 1
-CARA = 0
-COROA = 1
+BOM = 0
+MAU = 1
+GREEN = 0
+RED = 1
 
-DISTRIB_FALSA = 0.5
+DISTRIB_BOM = 0.5
 
 
 # probs condicionais
-pr_cara_dado_viciada = 1
-pr_coroa_dado_viciada = 1 - pr_cara_dado_viciada
+pr_G_dado_BOM = 0.8
+pr_R_dado_BOM = 1 - pr_G_dado_BOM
 
-pr_cara_dado_honesta = 0.5
-pr_coroa_dado_honesta = 1 - pr_cara_dado_honesta
+pr_G_dado_MAU = 0.3
+pr_R_dado_MAU = 1 - pr_G_dado_MAU
 
 
-def sortear_moeda_da_urna():
-    return FALSA if random() < DISTRIB_FALSA\
-                 else HONESTA 
+def sortear_jogador():
+    return BOM if random() < DISTRIB_BOM\
+                 else MAU
 
-def lancar_moeda(moeda):
+def acender_luz(jogador):
     r = random()
-    if moeda == HONESTA:
-        return CARA \
-            if r < pr_cara_dado_honesta \
-            else COROA   
-    # FALSA:
-    return CARA \
-        if r < pr_cara_dado_viciada \
-        else COROA 
+    if jogador == BOM:
+        return GREEN \
+            if r < pr_G_dado_BOM \
+            else RED   
+    # MAU:
+    return GREEN \
+        if r < pr_G_dado_MAU \
+        else RED
   
 
-cont_tres_caras, cont_falsas = 0, 0
+#cont_tres_caras, cont_falsas = 0, 0
 
 for _ in range(REPETICOES):
+    break ###
     moeda = sortear_moeda_da_urna()
-#print "sorteada foi", "honesta" if moeda==HONESTA\
-#                                else "viciada"
     r1,r2,r3 = lancar_moeda(moeda),\
                lancar_moeda(moeda),\
                lancar_moeda(moeda)
@@ -50,43 +49,46 @@ for _ in range(REPETICOES):
         if moeda == FALSA:
             cont_falsas += 1
     
-print 1.0 * cont_falsas/cont_tres_caras
+#print 1.0 * cont_falsas/cont_tres_caras
 
 
-
-
-
-
-
-
+jogador = sortear_jogador()
+print "Jogador sorteado:", "BOM" if jogador==BOM \
+                                 else "MAU"
 
 # modelo de crencas
-pr_viciada = 0.8
+pr_BOM = 0.5
 
 cont = 0
-#print cont, "--- Pr{falsa} =", pr_viciada
+#print cont, "--- Pr{bom} =", pr_bom
 for _ in range(REPETICOES):
-    break  ### 
     cont += 1    
-    pr_honesta = 1 - pr_viciada
     
-    resultado = lancar_moeda(moeda)
+    resultado = acender_luz(jogador)
 
-    if resultado == COROA:
-        print "Pr{falsa} = 0" 
-        break
+    if resultado == RED:
+        
+        # n = Pr{R|B}.Pr{B}
+        # d = Pr{R|B}.Pr{B} + Pr{R|M}.Pr{M}
+        # Pr{B|R} = n/d
+
+        n = pr_R_dado_BOM * pr_BOM
+        d = n + pr_R_dado_MAU * (1 - pr_BOM)
+        pr_BOM = n / d
     
-    # CARA
+    if resultado == GREEN:
     
-    # n = Pr{C|V}.Pr{V}
-    # d = Pr{C|V}.Pr{V} + Pr{C|H}.Pr{H}
-    # Pr{V|C} = n/d
+        # n = Pr{G|B}.Pr{B}
+        # d = Pr{G|B}.Pr{B} + Pr{G|M}.Pr{M}
+        # Pr{B|G} = n/d
  
-    n = pr_cara_dado_viciada * pr_viciada
-    d = n + pr_cara_dado_honesta * pr_honesta
-    pr_viciada = n / d
+        n = pr_G_dado_BOM * pr_BOM
+        d = n + pr_G_dado_MAU * (1 - pr_BOM)
+        pr_BOM = n / d
 
-    print cont, "--- Pr{falsa} =", pr_viciada
+    print cont, \
+          "G" if resultado == GREEN else "R", \
+          "--- Pr{bom} =", pr_BOM
 
 
 
